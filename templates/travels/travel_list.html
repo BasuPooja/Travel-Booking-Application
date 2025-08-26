@@ -7,7 +7,7 @@
 <!-- Filter Row -->
 <div class="card shadow-sm mb-4">
   <div class="card-body">
-    <form method="get" class="row g-3 align-items-end">
+    <form method="get" class="row g-3 align-items-end" id="filterForm">
       <div class="col-md-2">
         {{ form.type.label_tag }}
         {{ form.type }}
@@ -24,8 +24,9 @@
         {{ form.date.label_tag }}
         {{ form.date }}
       </div>
-      <div class="col-md-2 d-grid">
-        <button class="btn btn-primary">Filter</button>
+      <div class="col-md-2 d-grid gap-2">
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <a href="{% url 'travel_list' %}" class="btn btn-outline-secondary">Reset</a>
       </div>
     </form>
   </div>
