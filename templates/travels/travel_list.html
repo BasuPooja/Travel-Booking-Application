@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Available Travel Options{% endblock %}
+{% block page_subtitle %}Choose your next destination easily{% endblock %}
+
+{% block content %}
+<!-- Filter Row -->
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <form method="get" class="row g-3 align-items-end">
+      <div class="col-md-2">
+        {{ form.type.label_tag }}
+        {{ form.type }}
+      </div>
+      <div class="col-md-3">
+        {{ form.source.label_tag }}
+        {{ form.source }}
+      </div>
+      <div class="col-md-3">
+        {{ form.destination.label_tag }}
+        {{ form.destination }}
+      </div>
+      <div class="col-md-2">
+        {{ form.date.label_tag }}
+        {{ form.date }}
+      </div>
+      <div class="col-md-2 d-grid">
+        <button class="btn btn-primary">Filter</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Travel Options Table -->
+<table class="table table-striped shadow-sm rounded">
+  <thead class="table-dark">
+    <tr>
+      <th>Type</th>
+      <th>Route</th>
+      <th>Date & Time</th>
+      <th>Price</th>
+      <th>Seats</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for t in travels %}
+    <tr>
+      <td>{{ t.type }}</td>
+      <td>{{ t.source }} → {{ t.destination }}</td>
+      <td>{{ t.date_time }}</td>
+      <td>₹ {{ t.price }}</td>
+      <td>{{ t.available_seats }}</td>
+      <td>
+        <a class="btn btn-sm btn-primary" href="{% url 'travel_detail' t.pk %}">View</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="6" class="text-center text-muted">No travel options found.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

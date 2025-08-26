@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block page_title %}My Profile{% endblock %}
+{% block page_subtitle %}Update your personal details{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm p-4">
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Update</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Cancel Booking #{{ booking.booking_id }}?</h2>
+<p>This will restore {{ booking.number_of_seats }} seat(s) to the travel option.</p>
+<form method="post">
+  {% csrf_token %}
+  <button class="btn btn-danger">Confirm Cancel</button>
+  <a href="{% url 'my_bookings' %}" class="btn btn-secondary">Back</a>
+</form>
+{% endblock %}
