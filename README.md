@@ -1,110 +1,133 @@
 # Travel Booking Application (Django)
 
-A simple travel booking web application built with Django.
+A comprehensive travel booking web application built with Django featuring user authentication, booking management, and admin controls.
 
 ## ✨ Features
-- User authentication (register, login, logout using Django auth)
-- Profile management
-- **Travel options list with advanced filters** (type, source, destination, date) and reset button
-- **Pagination** (7 rows per page)
-- Travel detail page with booking functionality
-- Bookings system with seat availability checks & cancel booking option
-- **My Bookings** page with cancellation support
-- **Staff/Admin features:**
-  - Add new travel options
-  - Manage existing travel options (with filters, reset & pagination)
-- Bootstrap 5 responsive UI with icons
-- Header banner and footer with custom theme colors
+- **User Authentication**: Register, login, logout, and profile management using Django auth
+- **Travel Booking System**: Browse, filter, and book travel options with real-time seat availability
+- **Advanced Filtering**: Filter by type, source, destination, and date with reset functionality
+- **Pagination**: Clean pagination with 7 items per page
+- **Booking Management**: View and cancel bookings with seat restoration
+- **Admin/Staff Features**: Add and manage travel options (staff-only access)
+- **Responsive UI**: Bootstrap 5 with custom theme and icons
+- **Database Transactions**: Prevents overbooking with `select_for_update()`
 
 ## 🛠 Tech Stack
-- Django 4.2 (LTS)
-- SQLite (default), MySQL optional
-- Bootstrap 5 + Bootstrap Icons
+- **Backend**: Django 4.2 (LTS)
+- **Database**: SQLite (development), MySQL (production)
+- **Frontend**: Bootstrap 5 + Bootstrap Icons
+- **Environment**: python-decouple for configuration
+- **Deployment**: PythonAnywhere ready
 
-## 🚀 Setup Instructions
+## 🚀 Quick Start
 
 ```bash
-# Create and activate virtual environment
-python -m venv venv
-venv\Scripts\activate    # Windows
-source venv/bin/activate # Linux/Mac
+# 1. Extract project and navigate to directory
+cd TravelBookingApplication
 
-# Install dependencies
+# 2. Create virtual environment
+python -m venv venv
+
+# 3. Activate environment
+# Windows:
+venv\Scripts\activate
+# Linux/Mac:
+source venv/bin/activate
+
+# 4. Install dependencies
 pip install -r requirements.txt
 
-# Apply migrations
+# 5. Create environment file
+echo "SECRET_KEY=your-secure-secret-key-here" > .env
+echo "DEBUG=True" >> .env
+echo "ALLOWED_HOSTS=localhost,127.0.0.1" >> .env
+echo "DB_ENGINE=sqlite" >> .env
+
+# 6.env
+SECRET_KEY=36(5170mbfwlrcs099r6r$uv_@3)c4p!$*i4p2z9(_f@k!a$1=
+DEBUG=False
+ALLOWED_HOSTS=localhost,127.0.0.1,PoojaKumari.pythonanywhere.com
+DB_ENGINE=mysql
+MYSQL_DATABASE=PoojaKumari$TravelBooking
+MYSQL_USER=PoojaKumari
+MYSQL_PASSWORD=MySQL@12345
+MYSQL_HOST=PoojaKumari.mysql.pythonanywhere-services.com
+MYSQL_PORT=3306
+
+# 7. MySQL (Production)
+
+'ENGINE': 'django.db.backends.mysql',
+'NAME': config('MYSQL_DATABASE', default='PoojaKumari$TravelBooking'),
+'USER': config('MYSQL_USER', default='PoojaKumari'),
+'PASSWORD': config('MYSQL_PASSWORD', default='MySQL@12345'),
+'HOST': config('MYSQL_HOST', default='PoojaKumari.mysql.pythonanywhere-services.com'),
+'PORT': config('MYSQL_PORT', default=3306, cast=int),
+'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"},
+
+# 8. Testing
+# Run all tests
+python manage.py test
+
+# Run specific app tests
+python manage.py test accounts
+python manage.py test travels
+python manage.py test bookings
+
+# Run with verbose output
+python manage.py test -v 2
+
+# 9. WSGI Configuration
+
+import os
+import sys
+
+path = '/home/PoojaKumari/TravelBookingApplication'
+if path not in sys.path:
+    sys.path.append(path)
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'travel_booking.settings'
+
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
+
+# 10. Run migrations
 python manage.py migrate
 
-# Create superuser for admin access
+# 11. Create superuser
 python manage.py createsuperuser
 
-# Run the server
+# 12. Run development server
 python manage.py runserver
-```
 
-### Seed Initial Data
-Go to `/admin/` and add `TravelOption` entries, or use the **Add Travel** feature (staff only).
 
----
 
-## 🗄 MySQL (Optional)
+# Application Structure
 
-To use MySQL, set environment variables:
-
-```bash
-export DB_ENGINE=mysql
-export MYSQL_DATABASE=travel_booking
-export MYSQL_USER=root
-export MYSQL_PASSWORD=yourpass
-export MYSQL_HOST=127.0.0.1
-export MYSQL_PORT=3306
-```
-
-Make sure `mysqlclient` is installed and compatible with your OS.
-
----
-
-## ✅ Running Tests
-```bash
-python manage.py test
-```
-
----
-
-## 🌍 Deployment (PythonAnywhere Example)
-1. Create new PythonAnywhere web app (manual config).
-2. Upload project or pull from GitHub.
-3. Create virtualenv and run `pip install -r requirements.txt`.
-4. Configure **WSGI file** → `travel_booking.wsgi:application`.
-5. Set env vars (`DB_ENGINE`, `SECRET_KEY`, etc.).
-6. Collect static files:
-   ```bash
-   python manage.py collectstatic --noinput
-   ```
-7. Reload web app.
-
----
-
-## 🔗 URLs Overview
-- `/` → Travel list (with filters + pagination)
-- `/accounts/register/`
-- `/accounts/login/`
-- `/accounts/profile/`
-- `/travels/` → Browse travel options
-- `/travels/<id>/` → Travel details + booking
-- `/bookings/mine/` → My bookings
-- `/bookings/cancel/<booking_id>/` → Cancel booking
-- `/travels/add/` → Add new travel (staff only)
-- `/travels/manage/` → Manage travel options (staff only)
-
----
-
-## 📝 Notes
-- Filters: type, source, destination, date (with reset).
-- Pagination: 7 rows per page for both Travel List & Manage Travel.
-- Seat updates use DB transactions (`select_for_update`) to prevent overselling.
-- Booking stores `total_price` snapshot at purchase time.
-- Navbar dynamically shows Add/Manage Travel links only for staff/superusers.
-- Bootstrap Icons are used for navigation (Travels List, My Bookings, Add, Manage, etc.).
-
----
+TravelBookingApplication/
+├── accounts/                 # User authentication
+│   ├── models.py
+│   ├── views.py
+│   ├── forms.py
+│   └── templates/
+├── bookings/                 # Booking system
+│   ├── models.py
+│   ├── views.py
+│   ├── tests.py
+│   └── templates/
+├── travels/                  # Travel management
+│   ├── models.py
+│   ├── views.py
+│   ├── forms.py
+│   └── templates/
+├── templates/                # Base templates
+│   └── base.html
+├── static/                   # Static files
+│   └── css/
+├── travel_booking/           # Project settings
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── manage.py
+├── requirements.txt
+├── .env                      # Environment variables
+└── README.md

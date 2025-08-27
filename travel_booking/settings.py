@@ -2,15 +2,26 @@ import os
 from pathlib import Path
 from decouple import config, Csv
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key-change-me")
-DEBUG = os.environ.get("DEBUG", "True") == "True"
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
-# for PythonAnywhere
-ALLOWED_HOSTS.append('PoojaKumari.pythonanywhere.com')
+# Important for production
+DEBUG = False
+
+# Add your PythonAnywhere domain
+ALLOWED_HOSTS = ['PoojaKumari.pythonanywhere.com', '127.0.0.1']
+
+# Static files configuration
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# Media files configuration
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+SECRET_KEY = config('SECRET_KEY', default='dev-secret-key-change-me')
+DEBUG = config('DEBUG', default=False, cast=bool)
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,PoojaKumari.pythonanywhere.com', cast=Csv())
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -55,21 +66,26 @@ TEMPLATES = [
 WSGI_APPLICATION = 'travel_booking.wsgi.application'
 
 # Database: SQLite by default; switch to MySQL by setting DB_ENGINE=mysql
-
 db_engine = config('DB_ENGINE', default='mysql')
 if db_engine == "mysql":
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': config('MYSQL_DATABASE', default='PoojaKumari$TravelBooking'),
+            'NAME': config('MYSQL_DATABASE', default='PoojaKumari$default'),
             'USER': config('MYSQL_USER', default='PoojaKumari'),
-            'PASSWORD': config('MYSQL_PASSWORD', default='MySQL@12345'),
+            'PASSWORD': config('MYSQL_PASSWORD', default='MySql@12345'),
             'HOST': config('MYSQL_HOST', default='PoojaKumari.mysql.pythonanywhere-services.com'),
             'PORT': config('MYSQL_PORT', default=3306, cast=int),
             'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"},
         }
     }
-
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
@@ -89,12 +105,11 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = 'travel_list' 
+LOGIN_REDIRECT_URL = 'travel_list'
 LOGOUT_REDIRECT_URL = 'login'
 
 # Session settings
-SESSION_ENGINE = "django.contrib.sessions.backends.db"  
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 1800  
+SESSION_COOKIE_AGE = 1800
 SESSION_SAVE_EVERY_REQUEST = False
-
