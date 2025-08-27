@@ -55,24 +55,18 @@ TEMPLATES = [
 WSGI_APPLICATION = 'travel_booking.wsgi.application'
 
 # Database: SQLite by default; switch to MySQL by setting DB_ENGINE=mysql
-db_engine = os.environ.get("DB_ENGINE", "mysql")
+
+db_engine = config('DB_ENGINE', default='mysql')
 if db_engine == "mysql":
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': os.environ.get('MYSQL_DATABASE', 'Travel'),
-            'USER': os.environ.get('MYSQL_USER', 'root'),
-            'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'root'),
-            'HOST': os.environ.get('MYSQL_HOST', 'localhost'),
-            'PORT': os.environ.get('MYSQL_PORT', '3306'),
+            'NAME': config('MYSQL_DATABASE', default='PoojaKumari$TravelBooking'),
+            'USER': config('MYSQL_USER', default='PoojaKumari'),
+            'PASSWORD': config('MYSQL_PASSWORD', default='MySQL@12345'),
+            'HOST': config('MYSQL_HOST', default='PoojaKumari.mysql.pythonanywhere-services.com'),
+            'PORT': config('MYSQL_PORT', default=3306, cast=int),
             'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"},
-        }
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
 
@@ -100,7 +94,7 @@ LOGOUT_REDIRECT_URL = 'login'
 
 # Session settings
 SESSION_ENGINE = "django.contrib.sessions.backends.db"  
-SESSION_COOKIE_AGE = 1209600  
-SESSION_EXPIRE_AT_BROWSER_CLOSE = False  
-SESSION_SAVE_EVERY_REQUEST = True 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 1800  
+SESSION_SAVE_EVERY_REQUEST = False
 
