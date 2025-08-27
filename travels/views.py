@@ -29,7 +29,6 @@ def add_travel_option(request):
 def manage_travel_options(request):
     qs = TravelOption.objects.all().order_by("date_time")
 
-    # Apply filters
     form = TravelSearchForm(request.GET or None)
     if form.is_valid():
         t = form.cleaned_data.get("type")
@@ -46,8 +45,7 @@ def manage_travel_options(request):
         if date:
             qs = qs.filter(date_time__date=date)
 
-    # Pagination (7 per page)
-    paginator = Paginator(qs, 7)
+    paginator = Paginator(qs, 10)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
@@ -77,8 +75,7 @@ def travel_list(request):
         if date:
             qs = qs.filter(date_time__date=date)
 
-    # Pagination (7 per page)
-    paginator = Paginator(qs, 7)
+    paginator = Paginator(qs, 10)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 

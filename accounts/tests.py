@@ -11,7 +11,6 @@ class AuthenticationTests(TestCase):
     def test_login_view(self):
         response = self.client.get(reverse('login'))
         self.assertEqual(response.status_code, 200)
-        # Update this line to match your actual template path
         self.assertTemplateUsed(response, 'registration/login.html')
 
     def test_successful_login(self):
@@ -19,8 +18,7 @@ class AuthenticationTests(TestCase):
             'username': 'testuser',
             'password': 'testpass123'
         })
-        # Check if login was successful (should redirect to travels page)
-        self.assertEqual(response.status_code, 302)  # Redirect status
+        self.assertEqual(response.status_code, 302)  
         self.assertRedirects(response, reverse('travel_list'))
 
     def test_failed_login(self):
@@ -29,7 +27,6 @@ class AuthenticationTests(TestCase):
             'password': 'wrongpassword'
         })
         self.assertEqual(response.status_code, 200)
-        # Check for login error message
         self.assertContains(response, 'Please enter a correct username and password')
 
 class RegistrationTests(TestCase):
@@ -45,7 +42,7 @@ class RegistrationTests(TestCase):
             'password': 'newpass123',
             'confirm_password': 'newpass123'
         })
-        self.assertEqual(response.status_code, 302)  # Should redirect after successful registration
+        self.assertEqual(response.status_code, 302) 
         self.assertTrue(User.objects.filter(username='newuser').exists())
 
     def test_registration_password_mismatch(self):

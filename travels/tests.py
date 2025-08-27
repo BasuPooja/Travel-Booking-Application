@@ -61,6 +61,6 @@ class TravelFormTests(TestCase):
         self.assertTrue(form.is_valid())
 
     def test_invalid_search_form(self):
-        form_data = {'type': 'InvalidType'}  # Invalid choice
+        form_data = {'type': 'InvalidType'} 
         form = TravelSearchForm(data=form_data)
         self.assertFalse(form.is_valid())
