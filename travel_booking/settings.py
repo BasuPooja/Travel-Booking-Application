@@ -98,4 +98,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'travel_list' 
 LOGOUT_REDIRECT_URL = 'login'
 
+# Session settings
+SESSION_ENGINE = "django.contrib.sessions.backends.db"  
+SESSION_COOKIE_AGE = 1209600  
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  
+SESSION_SAVE_EVERY_REQUEST = True 
 
