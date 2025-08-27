@@ -2,35 +2,55 @@
 
 A simple travel booking web application built with Django.
 
-## Features
-- User registration, login, logout (Django auth)
-- Manage profile
-- Travel options list with filters (type, source, destination, date)
-- Book travel, seat availability checks, cancel booking
-- My bookings page
-- Bootstrap UI, responsive
+## ✨ Features
+- User authentication (register, login, logout using Django auth)
+- Profile management
+- **Travel options list with advanced filters** (type, source, destination, date) and reset button
+- **Pagination** (7 rows per page)
+- Travel detail page with booking functionality
+- Bookings system with seat availability checks & cancel booking option
+- **My Bookings** page with cancellation support
+- **Staff/Admin features:**
+  - Add new travel options
+  - Manage existing travel options (with filters, reset & pagination)
+- Bootstrap 5 responsive UI with icons
+- Header banner and footer with custom theme colors
 
-## Tech
+## 🛠 Tech Stack
 - Django 4.2 (LTS)
-- SQLite by default; MySQL optional
-- Bootstrap 5
+- SQLite (default), MySQL optional
+- Bootstrap 5 + Bootstrap Icons
 
-## Setup
+## 🚀 Setup Instructions
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
+# Create and activate virtual environment
+python -m venv venv
+venv\Scripts\activate    # Windows
+source venv/bin/activate # Linux/Mac
+
+# Install dependencies
 pip install -r requirements.txt
+
+# Apply migrations
 python manage.py migrate
+
+# Create superuser for admin access
 python manage.py createsuperuser
+
+# Run the server
 python manage.py runserver
 ```
 
-### Seed some travel options (via admin)
-Go to `/admin/` and add `TravelOption` entries.
+### Seed Initial Data
+Go to `/admin/` and add `TravelOption` entries, or use the **Add Travel** feature (staff only).
 
-## MySQL (Bonus)
-Set environment variables to switch DB:
+---
+
+## 🗄 MySQL (Optional)
+
+To use MySQL, set environment variables:
+
 ```bash
 export DB_ENGINE=mysql
 export MYSQL_DATABASE=travel_booking
@@ -39,35 +59,52 @@ export MYSQL_PASSWORD=yourpass
 export MYSQL_HOST=127.0.0.1
 export MYSQL_PORT=3306
 ```
-Install MySQL server and ensure `mysqlclient` builds on your OS.
 
-## Running Tests
+Make sure `mysqlclient` is installed and compatible with your OS.
+
+---
+
+## ✅ Running Tests
 ```bash
 python manage.py test
 ```
 
-## Deployment (PythonAnywhere quick guide)
-1. Create a new PythonAnywhere web app (manual config).
-2. Upload project or connect GitHub repo.
-3. Create virtualenv and `pip install -r requirements.txt`.
-4. Set **WSGI file** to point to `travel_booking.wsgi:application`.
-5. Set env vars (e.g., `DB_ENGINE`, `SECRET_KEY`).
-6. Collect static:
+---
+
+## 🌍 Deployment (PythonAnywhere Example)
+1. Create new PythonAnywhere web app (manual config).
+2. Upload project or pull from GitHub.
+3. Create virtualenv and run `pip install -r requirements.txt`.
+4. Configure **WSGI file** → `travel_booking.wsgi:application`.
+5. Set env vars (`DB_ENGINE`, `SECRET_KEY`, etc.).
+6. Collect static files:
    ```bash
    python manage.py collectstatic --noinput
    ```
-7. Reload the web app.
+7. Reload web app.
 
-## URLs
-- `/` → travel list
+---
+
+## 🔗 URLs Overview
+- `/` → Travel list (with filters + pagination)
 - `/accounts/register/`
 - `/accounts/login/`
 - `/accounts/profile/`
-- `/travels/` (list + filters)
-- `/travels/<id>/` (detail + booking)
-- `/bookings/mine/` (my bookings)
-- `/bookings/cancel/<booking_id>/`
+- `/travels/` → Browse travel options
+- `/travels/<id>/` → Travel details + booking
+- `/bookings/mine/` → My bookings
+- `/bookings/cancel/<booking_id>/` → Cancel booking
+- `/travels/add/` → Add new travel (staff only)
+- `/travels/manage/` → Manage travel options (staff only)
 
-## Notes
-- Seat updates are wrapped in DB transactions with `select_for_update` to prevent overselling.
-- `Booking.total_price` is stored for snapshot of price at purchase time.
+---
+
+## 📝 Notes
+- Filters: type, source, destination, date (with reset).
+- Pagination: 7 rows per page for both Travel List & Manage Travel.
+- Seat updates use DB transactions (`select_for_update`) to prevent overselling.
+- Booking stores `total_price` snapshot at purchase time.
+- Navbar dynamically shows Add/Manage Travel links only for staff/superusers.
+- Bootstrap Icons are used for navigation (Travels List, My Bookings, Add, Manage, etc.).
+
+---
