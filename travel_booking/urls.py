@@ -4,9 +4,15 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    # accounts (registration, login, logout)
     path('accounts/', include('accounts.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),  # login/logout/password views
+    path('accounts/', include('django.contrib.auth.urls')),
+
+    # travels + bookings
     path('travels/', include('travels.urls')),
     path('bookings/', include('bookings.urls')),
-    path('', RedirectView.as_view(pattern_name='travel_list', permanent=False)),
+
+    # root → login page
+    path('', RedirectView.as_view(pattern_name='login', permanent=False)),
 ]
