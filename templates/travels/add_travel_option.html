@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Add Travel Option{% endblock %}
+{% block page_subtitle %}Add new travel routes manually{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Add New Travel Option</h5>
+    </div>
+    <div class="card-body">
+        <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="{{ form.type.id_for_label }}" class="form-label">Travel Type</label>
+                    {{ form.type }}
+                    {% if form.type.errors %}
+                        <div class="text-danger">{{ form.type.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="{{ form.price.id_for_label }}" class="form-label">Price (₹)</label>
+                    {{ form.price }}
+                    {% if form.price.errors %}
+                        <div class="text-danger">{{ form.price.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="{{ form.source.id_for_label }}" class="form-label">Source City</label>
+                    {{ form.source }}
+                    {% if form.source.errors %}
+                        <div class="text-danger">{{ form.source.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="{{ form.destination.id_for_label }}" class="form-label">Destination City</label>
+                    {{ form.destination }}
+                    {% if form.destination.errors %}
+                        <div class="text-danger">{{ form.destination.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="{{ form.date_time.id_for_label }}" class="form-label">Date & Time</label>
+                    {{ form.date_time }}
+                    {% if form.date_time.errors %}
+                        <div class="text-danger">{{ form.date_time.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="{{ form.available_seats.id_for_label }}" class="form-label">Available Seats</label>
+                    {{ form.available_seats }}
+                    {% if form.available_seats.errors %}
+                        <div class="text-danger">{{ form.available_seats.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a href="{% url 'travel_list' %}" class="btn btn-secondary me-md-2">Cancel</a>
+                <button type="submit" class="btn btn-primary">Add Travel Option</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+.form-control:focus {
+    border-color: #c40f4b;
+    box-shadow: 0 0 0 0.2rem rgba(196, 15, 75, 0.25);
+}
+</style>
+{% endblock %}

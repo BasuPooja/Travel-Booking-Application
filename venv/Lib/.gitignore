@@ -1,0 +1,51 @@
+# Python
+*.pyc
+*.pyo
+__pycache__/
+*.pyd
+*.pdb
+*.so
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Django stuff
+*.log
+*.pot
+*.pyc
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+*.mo
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# IDE
+.idea/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# pytest / coverage
+.coverage
+htmlcov/
+.cache/
+
+
+# .env
+SECRET_KEY=your-super-secret-random-key-here
+DEBUG=False
+ALLOWED_HOSTS=localhost,127.0.0.1,yourusername.pythonanywhere.com
+DB_ENGINE=mysql
+MYSQL_DATABASE=yourusername$travelbooking
+MYSQL_USER=yourusername
+MYSQL_PASSWORD=your_mysql_password_from_pythonanywhere
+MYSQL_HOST=yourusername.mysql.pythonanywhere-services.com
+MYSQL_PORT=3306

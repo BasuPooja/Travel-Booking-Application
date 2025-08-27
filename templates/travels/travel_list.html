@@ -9,58 +9,119 @@
   <div class="card-body">
     <form method="get" class="row g-3 align-items-end" id="filterForm">
       <div class="col-md-2">
-        {{ form.type.label_tag }}
+        <label class="form-label">{{ form.type.label }}</label>
         {{ form.type }}
       </div>
-      <div class="col-md-3">
-        {{ form.source.label_tag }}
+      <div class="col-md-2">
+        <label class="form-label">{{ form.source.label }}</label>
         {{ form.source }}
       </div>
-      <div class="col-md-3">
-        {{ form.destination.label_tag }}
+      <div class="col-md-2">
+        <label class="form-label">{{ form.destination.label }}</label>
         {{ form.destination }}
       </div>
       <div class="col-md-2">
-        {{ form.date.label_tag }}
+        <label class="form-label">{{ form.date.label }}</label>
         {{ form.date }}
       </div>
-      <div class="col-md-2 d-grid gap-2">
-        <button type="submit" class="btn btn-primary">Filter</button>
-        <a href="{% url 'travel_list' %}" class="btn btn-outline-secondary">Reset</a>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Filter</button>
+      </div>
+      <div class="col-md-2">
+        <a href="{% url 'travel_list' %}" class="btn btn-outline-secondary w-100">Reset</a>
       </div>
     </form>
   </div>
 </div>
 
 <!-- Travel Options Table -->
-<table class="table table-striped shadow-sm rounded">
-  <thead class="table-dark">
-    <tr>
-      <th>Type</th>
-      <th>Route</th>
-      <th>Date & Time</th>
-      <th>Price</th>
-      <th>Seats</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for t in travels %}
-    <tr>
-      <td>{{ t.type }}</td>
-      <td>{{ t.source }} → {{ t.destination }}</td>
-      <td>{{ t.date_time }}</td>
-      <td>₹ {{ t.price }}</td>
-      <td>{{ t.available_seats }}</td>
-      <td>
-        <a class="btn btn-sm btn-primary" href="{% url 'travel_detail' t.pk %}">View</a>
-      </td>
-    </tr>
-    {% empty %}
-    <tr>
-      <td colspan="6" class="text-center text-muted">No travel options found.</td>
-    </tr>
+<div class="table-responsive">
+  <table class="table table-striped shadow-sm rounded">
+    <thead class="table-dark">
+      <tr>
+        <th>Type</th>
+        <th>Route</th>
+        <th>Date & Time</th>
+        <th>Price</th>
+        <th>Seats</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for t in travels %}
+      <tr>
+        <td>{{ t.type }}</td>
+        <td>{{ t.source }} → {{ t.destination }}</td>
+        <td>{{ t.date_time|date:"M. d, Y, g:i a" }}</td>
+        <td>₹ {{ t.price }}</td>
+        <td>{{ t.available_seats }}</td>
+        <td>
+          <a class="btn btn-sm btn-primary" href="{% url 'travel_detail' t.pk %}">View</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" class="text-center text-muted py-4">No travel options found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Pagination -->
+{% if travels.has_other_pages %}
+<nav aria-label="Page navigation" class="mt-4">
+  <ul class="pagination justify-content-center">
+    {% if travels.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ travels.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" aria-label="Previous">
+          &laquo; Previous
+        </a>
+      </li>
+    {% else %}
+      <li class="page-item disabled">
+        <span class="page-link">&laquo; Previous</span>
+      </li>
+    {% endif %}
+
+    {% for i in travels.paginator.page_range %}
+      {% if travels.number == i %}
+        <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+      {% elif i > travels.number|add:-3 and i < travels.number|add:3 %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ i }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{{ i }}</a>
+        </li>
+      {% endif %}
     {% endfor %}
-  </tbody>
-</table>
+
+    {% if travels.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ travels.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" aria-label="Next">
+          Next &raquo;
+        </a>
+      </li>
+    {% else %}
+      <li class="page-item disabled">
+        <span class="page-link">Next &raquo;</span>
+      </li>
+    {% endif %}
+  </ul>
+</nav>
+
+<div class="text-center text-muted mt-2">
+  Page {{ travels.number }} of {{ travels.paginator.num_pages }}
+</div>
+{% endif %}
+
+<style>
+.form-control {
+  margin-bottom: 0;
+}
+.btn {
+  white-space: nowrap;
+}
+.table th {
+  border-top: none;
+}
+</style>
 {% endblock %}
