@@ -1,4 +1,4 @@
-# Travel Booking Application (Django)
+# Travel Booking Application
 
 A comprehensive travel booking web application built with Django featuring user authentication, booking management, and admin controls.
 
@@ -100,7 +100,7 @@ python manage.py createsuperuser
 python manage.py runserver
 
 # 13. SuperUser id Password
-Userid: admin
+Username: admin
 Password: Admin@123
 
 # Application Structure
