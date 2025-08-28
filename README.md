@@ -99,7 +99,9 @@ python manage.py createsuperuser
 # 12. Run development server
 python manage.py runserver
 
-
+# 13. SuperUser id Password
+Userid: admin
+Password: Admin@123
 
 # Application Structure
 
@@ -131,3 +133,5 @@ TravelBookingApplication/
 ├── requirements.txt
 ├── .env                      # Environment variables
 └── README.md
+
+
